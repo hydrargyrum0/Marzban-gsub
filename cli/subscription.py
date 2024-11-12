@@ -42,6 +42,9 @@ def get_config(
     ),
     as_base64: bool = typer.Option(
         False, "--base64", is_flag=True, help="Encodes output in base64 format if present"
+    ),
+    reverse: bool = typer.Option(
+        False, "--reverse", is_flag=True, help="Reverses profiles in subscription like 1,2,3 -> 3,2,1"
     )
 ):
     """
@@ -55,7 +58,7 @@ def get_config(
     with GetDB() as db:
         user: UserResponse = UserResponse.from_orm(utils.get_user(db, username))
         conf: str = generate_subscription(
-            user=user, config_format=config_format.name, as_base64=as_base64
+            user=user, config_format=config_format.name, as_base64=as_base64, reverse=reverse
         )
 
         if output_file:
